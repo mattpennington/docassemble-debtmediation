@@ -1,0 +1,8 @@
+metadata:
+  title: Debt Mediation Onboarding
+  short title: Test
+  comment: Onboarding tool for debt mediation
+---
+mandatory: True
+question: |
+  Starting Point
