@@ -3,6 +3,10 @@ metadata:
   short title: Debt Mediation
   comment: Onboarding tool for debt mediation
 ---
+imports:
+  # used to generate the random authentication code we send to the interviewees
+  - random
+---
 include:
   - debt-mediation-controller.yml
   - mediator-questions.yml

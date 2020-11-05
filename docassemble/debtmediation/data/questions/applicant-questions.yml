@@ -9,6 +9,15 @@ field: intro_screen_applicant
 ---
 role: applicant
 question: |
+  Please enter the authentication code sent to you by SMS:
+fields:
+  - Auth Code: applicant_auth_code
+validation code: |
+  if applicant_auth_code != applicant.auth_code:
+    validation_error("Incorrect auth code - try again!")
+---
+role: applicant
+question: |
   Approximately how much money is owed to you?
 fields:
   - Amount: applicant.debt_amount

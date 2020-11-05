@@ -1,30 +1,38 @@
 mandatory: True
 code: |
-  #set the interview as multi user (https://docassemble.org/docs/special.html#multi_user)
+  # set the interview as multi user (https://docassemble.org/docs/special.html#multi_user)
   multi_user = True
+
   role = 'organizer'
-  if intro_screen_mediator and applicant.mobile_number and debtor.mobile_number:
-    if user_logged_in():
-      if user_info().email == applicant.email:
-        role = 'applicant'
-      elif user_info().email == debtor.email:
-        role = 'debtor'
+  # we pass in the user as a url query string parameter - they will authenicate with their auth code (https://docassemble.org/docs/special.html#url_args) to save requiring a login
+  if 'role' in url_args:
+    role = url_args['role']
+
+  #  role = 'organizer'
+  #  if intro_screen_mediator and applicant.mobile_number and debtor.mobile_number:
+  #    if user_logged_in():
+  #      if user_info().email == applicant.email:
+  #        role = 'applicant'
+  #      elif user_info().email == debtor.email:
+  #        role = 'debtor'
 ---
 event: role_event
 question: Awaiting Information
 subquestion: |
-  % if not user_logged_in():
-  If you were invited to participate in the mediation process, please click "Sign in."
-  % else:
-    % if role == 'organizer':
-      % if 'applicant' in role_needed:
-      We are waiting for information from the applicant and the debtor
-      % elif 'debtor' in role_needed:
-      We are now waiting for information from the debtor
-      % endif
-    % elif role == 'applicant':
-      Thank you for your assistance We are awaiting information from the debtor
+  role = 'organizer'
+  if 'role' in url_args:
+    role = url_args['role']
+
+  % if role == 'organizer':
+    % if 'applicant' in role_needed:
+    We are waiting for information from the applicant and the debtor
+    % elif 'debtor' in role_needed:
+    We are now waiting for information from the debtor
     % endif
+  % elif role == 'applicant':
+    We are awaiting information from the debtor.
+  % else:
+    We are awaiting more information.
   % endif
 
   Press **Check** to refresh the status of this interview.
@@ -34,6 +42,11 @@ buttons:
 objects:
   - applicant: Individual
   - debtor: Individual
+#---
+#mandatory: True
+#code: |
+#  applicant.role = 'applicant'
+#  debtor.role = 'debtor'
 ---
 #we are using this code block to control the flow of the interview between the various parties
 mandatory: True
@@ -45,19 +58,21 @@ code: |
   applicant.mobile_number
   debtor.mobile_number
 
-  applicant.invitation_sent
+  applicant.sms_sent
 
   # applicant questions
   intro_screen_applicant
+  applicant_auth_code
   applicant.debt_amount
   applicant.debt_months
   applicant.debt_overview
   applicant.debt_proposals
 
-  debtor.invitation_sent
+  debtor.sms_sent
 
   # debtor questions
   intro_screen_debtor
+  debtor_auth_code
   debtor.debt_overview
   debtor.debt_proposals
 

@@ -38,12 +38,16 @@ validation code: |
     validation_error("The applicant and the debtor cannot have the same email address")
 ---
 code: |
-  applicant.invitation_sent = send_email(to=applicant, template=invitation_email)
+  applicant.auth_code = random.randint(100000, 999999)
+  applicant.invitation_sent = send_email(to=applicant, template=applicant_email)
+  applicant.sms_sent = send_sms(applicant, body="Your Debt Mediation Interview authentication code is:" + applicant.auth_code)
 ---
 code: |
-  debtor.invitation_sent = send_email(to=debtor, template=invitation_email)
+  debtor.auth_code = random.randint(100000, 999999)
+  debtor.invitation_sent = send_email(to=debtor, template=debtor_email)
+  debtor.sms_sent = send_sms(debtor, body="Your Debt Mediation Interview authentication code is:" + debtor.auth_code)
 ---
-template: invitation_email
+template: applicant_email
 subject: |
   Debt Mediation - please complete this questionnaire
 content: |
@@ -54,7 +58,24 @@ content: |
   To allow us to get started on your matter, we would be grateful if you could supply us
   with some additional information by completing the short questionnaire below:
 
-  [${ interview_url() }](${ interview_url() })
+  [${ interview_url() + '&role=applicant' }](${ interview_url() + '&role=applicant' })
+
+  Kind regards
+
+  Your Debt Mediator
+---
+template: debtor_email
+subject: |
+  Debt Mediation - please complete this questionnaire
+content: |
+  Hi ${ debtor }
+
+  Your debt matter has been referred to us for mediation.
+
+  To allow us to get started on your matter, we would be grateful if you could supply us
+  with some additional information by completing the short questionnaire below:
+
+  [${ interview_url() + '&role=debtor' }](${ interview_url() + '&role=debtor' })
 
   Kind regards
 

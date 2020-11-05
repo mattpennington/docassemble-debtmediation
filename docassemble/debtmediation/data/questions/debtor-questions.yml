@@ -9,6 +9,15 @@ field: intro_screen_debtor
 ---
 role: debtor
 question: |
+  Please enter the authentication code sent to you by SMS:
+fields:
+  - Auth Code: debtor_auth_code
+validation code: |
+  if debtor_auth_code != debtor.auth_code:
+    validation_error("Incorrect auth code - try again!")
+---
+role: debtor
+question: |
   Please provide a statement about your position concerning the debt:
 fields:
   - no label: debtor.debt_overview
