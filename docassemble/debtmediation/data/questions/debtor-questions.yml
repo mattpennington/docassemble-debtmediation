@@ -1,0 +1,22 @@
+---
+role: debtor
+question: |
+  Debt Mediation Tool
+subquestion: |
+  Your debt matter has been referred to us for mediation.
+  To allow us to get started on your matter, please complete the questions in this short interview.
+field: intro_screen_debtor
+---
+role: debtor
+question: |
+  Please provide a statement about your position concerning the debt:
+fields:
+  - no label: debtor.debt_overview
+    input type: area
+---
+role: debtor
+question: |
+  Do you have any proposals for clearing the debt that you would like us to discuss during the mediation process:
+fields:
+  - no label: debtor.debt_proposals
+    input type: area

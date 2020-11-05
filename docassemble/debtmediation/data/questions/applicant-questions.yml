@@ -1,0 +1,36 @@
+---
+role: applicant
+question: |
+  Debt Mediation Tool
+subquestion: |
+  Your debt matter has been referred to us for mediation.
+  To allow us to get started on your matter, please complete the questions in this short interview.
+field: intro_screen_applicant
+---
+role: applicant
+question: |
+  Approximately how much money is owed to you?
+fields:
+  - Amount: applicant.debt_amount
+    datatype: currency
+---
+role: applicant
+question: |
+  How long has this dispute been going on (in months)?
+fields:
+  - Number of Months: applicant.debt_months
+    datatype: integer
+---
+role: applicant
+question: |
+  Please provide a brief statement about how this debt came to be owed to you:
+fields:
+  - no label: applicant.debt_overview
+    input type: area
+---
+role: applicant
+question: |
+  Do you have any proposals for clearing the debt that you would like us to discuss during the mediation process:
+fields:
+  - no label: applicant.debt_proposals
+    input type: area

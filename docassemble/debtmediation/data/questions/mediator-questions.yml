@@ -1,0 +1,98 @@
+---
+question: |
+  Debt Mediation Onboarding Helper
+subquestion: |
+  Onboarding tool for debt mediation
+field: intro_screen_mediator
+---
+question: |
+  Who is the applicant?
+subquestion: |
+  This is the person who is owed money
+fields:
+  - Name: applicant.name
+  - Email: applicant.email
+    datatype: email
+  - Mobile: applicant.mobile_number
+validation code: |
+  applicant.mobile_number = re.sub("[^0-9]", "", applicant.mobile_number)
+  if len(applicant.mobile_number) != 11:
+    validation_error("The phone number must contain 11 digits")
+---
+question: |
+  Who is the debtor?
+subquestion: |
+  This is the person who owes the money
+fields:
+  - Name: debtor.name
+  - Email: debtor.email
+    datatype: email
+  - Mobile: debtor.mobile_number
+validation code: |
+  debtor.mobile_number = re.sub("[^0-9]", "", debtor.mobile_number)
+  if len(debtor.mobile_number) != 11:
+    validation_error("The phone number must contain 11 digits")
+  elif debtor.mobile_number == applicant.mobile_number:
+    validation_error("The applicant and the debtor cannot have the same mobile number")
+  elif debtor.email == applicant.email:
+    validation_error("The applicant and the debtor cannot have the same email address")
+---
+code: |
+  applicant.invitation_sent = send_email(to=applicant, template=invitation_email)
+---
+code: |
+  debtor.invitation_sent = send_email(to=debtor, template=invitation_email)
+---
+template: invitation_email
+subject: |
+  Debt Mediation - please complete this questionnaire
+content: |
+  Hi ${ applicant }
+
+  Your debt matter has been referred to us for mediation.
+
+  To allow us to get started on your matter, we would be grateful if you could supply us
+  with some additional information by completing the short questionnaire below:
+
+  [${ interview_url() }](${ interview_url() })
+
+  Kind regards
+
+  Your Debt Mediator
+---
+template: mediation_overview_email
+subject: |
+  Debt Mediation Overview for ${ applicant } and ${ applicant }
+content: |
+  The applicant and the debtor have supplied the following information about their debt matter:
+
+  **Applicant**
+
+  **Approximately how much money is owed to you?**
+
+  applicant.debt_amount
+
+  **How long has this dispute been going on (in months)?**
+
+  applicant.debt_months
+
+  **Please provide a brief statement about how this debt came to be owed to you:**
+
+  applicant.debt_overview
+
+  **Do you have any proposals for clearing the debt that you would like us to discuss during the mediation process:**
+
+  applicant.debt_proposals
+
+  **Debtor**
+
+  **Please provide a statement about your position concerning the debt:**
+
+  debtor.debt_overview
+
+  **Do you have any proposals for clearing the debt that you would like us to discuss during the mediation process:**
+
+  debtor.debt_proposals
+
+  Debt Mediation Helper
+---
