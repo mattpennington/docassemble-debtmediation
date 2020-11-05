@@ -4,5 +4,5 @@
 
 ## Author
 
-Matt Pennington, mp+dev@tonic.works
+Matt Pennington, mp@tonic.works
 
