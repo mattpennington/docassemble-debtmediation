@@ -45,7 +45,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.debtmediation',
       version='0.1',
       description=(''),
-      long_description='# docassemble.debtmediation\n\n\n\n## Author\n\nMatt Pennington, mp+dev@tonic.works\n\n',
+      long_description='# docassemble.debtmediation\r\n\r\n\r\n\r\n## Author\r\n\r\nMatt Pennington, mp+dev@tonic.works\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Matt Pennington',
       author_email='mp+dev@tonic.works',

@@ -15,14 +15,14 @@ question: Awaiting Information
 subquestion: |
   % if not user_logged_in():
   If you were invited to participate in the mediation process, please click "Sign in."
-  % else
-    % if role == 'organizer'
+  % else:
+    % if role == 'organizer':
       % if 'applicant' in role_needed:
       We are waiting for information from the applicant and the debtor
       % elif 'debtor' in role_needed:
       We are now waiting for information from the debtor
       % endif
-    % elif role == 'applicant'
+    % elif role == 'applicant':
       Thank you for your assistance We are awaiting information from the debtor
     % endif
   % endif
