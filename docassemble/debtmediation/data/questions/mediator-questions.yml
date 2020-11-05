@@ -38,14 +38,17 @@ validation code: |
     validation_error("The applicant and the debtor cannot have the same email address")
 ---
 code: |
-  applicant.auth_code = random.randint(100000, 999999)
+  applicant.auth_code = str(random.randint(100000, 999999))
   applicant.invitation_sent = send_email(to=applicant, template=applicant_email)
-  applicant.sms_sent = send_sms(applicant, body="Your Debt Mediation Interview authentication code is:" + applicant.auth_code)
+  applicant.sms_sent = send_sms(applicant, body="Your Debt Mediation Interview authentication code is: " + applicant.auth_code)
 ---
 code: |
-  debtor.auth_code = random.randint(100000, 999999)
+  debtor.auth_code = str(random.randint(100000, 999999))
   debtor.invitation_sent = send_email(to=debtor, template=debtor_email)
-  debtor.sms_sent = send_sms(debtor, body="Your Debt Mediation Interview authentication code is:" + debtor.auth_code)
+  debtor.sms_sent = send_sms(debtor, body="Your Debt Mediation Interview authentication code is: " + debtor.auth_code)
+---
+code: |
+  mediator.summary_email_sent = send_email(to=mediator, template=mediation_overview_email)
 ---
 template: applicant_email
 subject: |
@@ -91,29 +94,29 @@ content: |
 
   **Approximately how much money is owed to you?**
 
-  applicant.debt_amount
+  ${ applicant.debt_amount }
 
   **How long has this dispute been going on (in months)?**
 
-  applicant.debt_months
+  ${ applicant.debt_months }
 
   **Please provide a brief statement about how this debt came to be owed to you:**
 
-  applicant.debt_overview
+  ${ applicant.debt_overview }
 
   **Do you have any proposals for clearing the debt that you would like us to discuss during the mediation process:**
 
-  applicant.debt_proposals
+  ${ applicant.debt_proposals }
 
   **Debtor**
 
   **Please provide a statement about your position concerning the debt:**
 
-  debtor.debt_overview
+  ${ debtor.debt_overview }
 
   **Do you have any proposals for clearing the debt that you would like us to discuss during the mediation process:**
 
-  debtor.debt_proposals
+  ${ debtor.debt_proposals }
 
   Debt Mediation Helper
 ---

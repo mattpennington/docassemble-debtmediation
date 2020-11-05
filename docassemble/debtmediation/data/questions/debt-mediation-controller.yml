@@ -1,13 +1,23 @@
-mandatory: True
+---
+objects:
+  - applicant: Individual
+  - debtor: Individual
+  - mediator: DAEmailRecipient
+---
+initial: True
 code: |
-  # set the interview as multi user (https://docassemble.org/docs/special.html#multi_user)
-  multi_user = True
-
   role = 'organizer'
   # we pass in the user as a url query string parameter - they will authenicate with their auth code (https://docassemble.org/docs/special.html#url_args) to save requiring a login
   if 'role' in url_args:
     role = url_args['role']
-
+---
+mandatory: True
+code: |
+  # set the interview as multi user (https://docassemble.org/docs/special.html#multi_user)
+  multi_user = True
+  # store the mediators details so we can email them later
+  mediator.address = user_info().email
+  mediator.name = user_info().first_name + ' ' + user_info().last_name
   #  role = 'organizer'
   #  if intro_screen_mediator and applicant.mobile_number and debtor.mobile_number:
   #    if user_logged_in():
@@ -19,10 +29,6 @@ code: |
 event: role_event
 question: Awaiting Information
 subquestion: |
-  role = 'organizer'
-  if 'role' in url_args:
-    role = url_args['role']
-
   % if role == 'organizer':
     % if 'applicant' in role_needed:
     We are waiting for information from the applicant and the debtor
@@ -34,14 +40,6 @@ subquestion: |
   % else:
     We are awaiting more information.
   % endif
-
-  Press **Check** to refresh the status of this interview.
-buttons:
-  - Check: refresh
----
-objects:
-  - applicant: Individual
-  - debtor: Individual
 #---
 #mandatory: True
 #code: |
@@ -77,7 +75,7 @@ code: |
   debtor.debt_proposals
 
   #update the mediator
-  mediation_overview_email
+  mediator.summary_email_sent
 ---
 # create a final screen for all participants
 mandatory: True
