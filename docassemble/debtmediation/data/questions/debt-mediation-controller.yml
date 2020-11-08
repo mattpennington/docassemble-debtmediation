@@ -6,7 +6,7 @@ objects:
 ---
 initial: True
 code: |
-  if(!mediator.exists()):
+  if(mediator.exists()==False):
     if user_logged_in():
       # store the mediators details so we can email them later
       mediator.address = user_info().email
