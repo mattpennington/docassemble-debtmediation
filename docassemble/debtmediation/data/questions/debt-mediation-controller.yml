@@ -6,18 +6,31 @@ objects:
 ---
 initial: True
 code: |
-  role = 'organizer'
-  # we pass in the user as a url query string parameter - they will authenicate with their auth code (https://docassemble.org/docs/special.html#url_args) to save requiring a login
-  if 'role' in url_args:
-    role = url_args['role']
+  if(!mediator.exists()):
+    if user_logged_in():
+      # store the mediators details so we can email them later
+      mediator.address = user_info().email
+      mediator.name = user_info().first_name + ' ' + user_info().last_name
+    else:
+      #have them login
+      user_login_request
+  else:
+    role = 'organizer'
+    # we pass in the user as a url query string parameter - they will authenicate with their auth code (https://docassemble.org/docs/special.html#url_args) to save requiring a login
+    if 'role' in url_args:
+      role = url_args['role']
 ---
 mandatory: True
 code: |
   # set the interview as multi user (https://docassemble.org/docs/special.html#multi_user)
   multi_user = True
-  # store the mediators details so we can email them later
-  mediator.address = user_info().email
-  mediator.name = user_info().first_name + ' ' + user_info().last_name
+---
+event: user_login_request
+question: |
+  You need to log in if you want to use this interview.
+buttons:
+  - Log in: signin
+  - Exit: exit
 ---
 event: role_event
 question: Awaiting Information
